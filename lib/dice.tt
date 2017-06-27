@@ -6,6 +6,8 @@ grammar Dice
         additive.value
       end
     }
+    /
+    parens
   end
 
   rule parens
@@ -44,6 +46,12 @@ grammar Dice
     '+' {
       def apply(l, r)
         l + r
+      end
+    }
+    /
+    '-' {
+      def apply(l, r)
+        l - r
       end
     }
   end

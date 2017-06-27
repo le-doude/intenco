@@ -4,3 +4,5 @@ source "https://rubygems.org"
 gem 'treetop'
 gem 'awesome_print'
 gem 'byebug'
+
+gem 'rspec'

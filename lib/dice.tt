@@ -1,41 +1,18 @@
 grammar Dice
-
   rule expression
-    ws? additive ws? {
-      def value
-        additive.value
-      end
-    }
-    /
-    parens
+    ws? additive ws? { def value; additive.value; end } / parens
   end
 
   rule parens
-    '(' exp:expression? ')' {
-      def value
-        exp && !exp.text_value.empty? ? exp.value : 0
-      end
-    }
+    '(' inner:expression? ')'  <ParenthesisExpression>
   end
 
   rule multitive
-    left:primary right:(ws? operator:multitive_op ws? operand:primary)* {
-      def value
-        right.elements.inject(left.value) do |r, elem|
-          elem.operator.apply(r, elem.operand.value)
-        end
-      end
-    }
+    left:primary right:(ws? operator:multitive_op ws? operand:primary)* <BinaryOperation>
   end
 
   rule additive
-    left:multitive right:(ws? operator:additive_op ws? operand:multitive)* {
-      def value
-        right.elements.inject(left.value) do |r, elem|
-          elem.operator.apply(r, elem.operand.value)
-        end
-      end
-    }
+    left:multitive right:(ws? operator:additive_op ws? operand:multitive)* <BinaryOperation>
   end
 
   rule primary
@@ -43,32 +20,11 @@ grammar Dice
   end
 
   rule additive_op
-    '+' {
-      def apply(l, r)
-        l + r
-      end
-    }
-    /
-    '-' {
-      def apply(l, r)
-        l - r
-      end
-    }
+    '+' <BinaryOperators::Addition> / '-' <BinaryOperators::Substraction>
   end
 
   rule multitive_op
-    '*' {
-      def apply(l, r)
-        l * r
-     end
-    }
-    /
-    '/' {
-      def apply(l, r)
-        l / r
-      end
-    }
-
+    '*' <BinaryOperators::Multiplication> / '/' <BinaryOperators::Division>
   end
 
   rule dice_group

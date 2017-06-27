@@ -9,11 +9,11 @@ Treetop.load 'lib/dice'
 
 parser = DiceParser.new
 
-test = '2d6'
+test = '3 * ( 1 + 2 ) + 3d6'
 if (tree = parser.parse(test))
   puts tree.value
 else
-  puts parser.failure_reason
+  puts "ERROR PARSING : #{parser.failure_reason}"
 end
 
 

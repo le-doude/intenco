@@ -1,13 +1,81 @@
 grammar Dice
- rule dice_group
+
+  rule expression
+    ws? additive ws? {
+      def value
+        additive.value
+      end
+    }
+  end
+
+  rule parens
+    '(' exp:expression? ')' {
+      def value
+        exp && !exp.text_value.empty? ? exp.value : 0
+      end
+    }
+  end
+
+  rule multitive
+    left:primary right:(ws? operator:multitive_op ws? operand:primary)* {
+      def value
+        right.elements.inject(left.value) do |r, elem|
+          elem.operator.apply(r, elem.operand.value)
+        end
+      end
+    }
+  end
+
+  rule additive
+    left:multitive right:(ws? operator:additive_op ws? operand:multitive)* {
+      def value
+        right.elements.inject(left.value) do |r, elem|
+          elem.operator.apply(r, elem.operand.value)
+        end
+      end
+    }
+  end
+
+  rule primary
+    parens / dice_group / number
+  end
+
+  rule additive_op
+    '+' {
+      def apply(l, r)
+        l + r
+      end
+    }
+  end
+
+  rule multitive_op
+    '*' {
+      def apply(l, r)
+        l * r
+     end
+    }
+    /
+    '/' {
+      def apply(l, r)
+        l / r
+      end
+    }
+
+  end
+
+  rule dice_group
     quantity:(number?) 'd' faces:number <Group>
   end
 
   rule number
-    [\d]+ {
+    [1-9] [0-9]* {
       def value
         text_value.to_i
       end
     }
+  end
+
+  rule ws
+    [ \t]+
   end
 end

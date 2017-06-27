@@ -1,0 +1,13 @@
+grammar Dice
+ rule dice_group
+    quantity:(number?) 'd' faces:number <Group>
+  end
+
+  rule number
+    [\d]+ {
+      def value
+        text_value.to_i
+      end
+    }
+  end
+end

@@ -1,10 +1,10 @@
 grammar Dice
   rule expression
-    ws? additive ws? { def value; additive.value; end } / parens
+    ws? additive ws? { def value; additive.value; end }
   end
 
   rule parens
-    '(' inner:expression? ')'  <ParenthesisExpression>
+    '(' inner:expression ')'  <ParenthesisExpression>
   end
 
   rule multitive

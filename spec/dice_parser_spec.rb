@@ -24,9 +24,24 @@ RSpec.describe DiceParser do
     end
     it 'parse simple division' do
       expect(DiceParser.new.parse('54/9')).not_to be_nil
-      end
+    end
     it 'parse simple division space' do
       expect(DiceParser.new.parse('54 / 9')).not_to be_nil
+    end
+    it 'parse sequence of addition' do
+      expect(DiceParser.new.parse('54 + 1 + 4 + 55 + 6 + 9')).not_to be_nil
+    end
+    it 'parse sequence of substractions' do
+      expect(DiceParser.new.parse('54 - 1 - 4 - 55 - 6 - 9')).not_to be_nil
+    end
+    it 'parses dice expressions' do
+      expect(DiceParser.new.parse('2d6')).not_to be_nil
+    end
+    it 'parses dice expressions within arithmetic' do
+      expect(DiceParser.new.parse('4 + 8d9 - 1')).not_to be_nil
+    end
+    it 'parses dice expressions within complex expressions' do
+      expect(DiceParser.new.parse('4 + ( 8d9 - 1 ) * ( 7 + ( 3d6 + 9 ) * ( 4d10 - 9 ) )')).not_to be_nil
     end
   end
 end

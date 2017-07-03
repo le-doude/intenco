@@ -7,15 +7,13 @@ module Dice
     def parser
       DiceParser.new
     end
-
-    def eval(expression)
-      parser.parse(expression).try(:value)
-    end
   end
 end
 
 require_relative 'dice/binary_operation'
 require_relative 'dice/binary_operators'
+require_relative 'dice/dice_operators'
+require_relative 'dice/dice_expression'
 require_relative 'dice/group'
 require_relative 'dice/parenthesis_expression'
 

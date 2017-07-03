@@ -3,10 +3,6 @@ grammar Dice
     ws? additive ws? { def value; additive.value; end }
   end
 
-  rule parens
-    '(' inner:expression ')'  <ParenthesisExpression>
-  end
-
   rule multitive
     left:primary right:(ws? operator:multitive_op ws? operand:primary)* <BinaryOperation>
   end
@@ -16,7 +12,7 @@ grammar Dice
   end
 
   rule primary
-    parens / dice_group / number
+    dice_group / number
   end
 
   rule additive_op
